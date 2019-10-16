@@ -1,0 +1,27 @@
+pool:
+  name: Hosted VS2017
+  demands: npm
+
+steps:
+- task: JFrog.jfrog-artifactory-vsts-extension.artifactory-tools-installer-task.ArtifactoryToolsInstaller@1
+  displayName: 'Artifactory Tools Installer'
+  inputs:
+    artifactoryService: 'art-1'
+    cliInstallationRepo: 'test-virtual'
+
+- task: JFrog.jfrog-artifactory-vsts-extension.artifactory-npm.ArtifactoryNpm@1
+  displayName: 'Artifactory npm install'
+  inputs:
+    artifactoryService: 'art-1'
+    sourceRepo: npm
+    workingFolder: 'npm-example'
+    collectBuildInfo: true
+    includeEnvVars: true
+  timeoutInMinutes: 555
+
+
+- task: JFrog.jfrog-artifactory-vsts-extension.artifactory-publish-build-info.ArtifactoryPublishBuildInfo@1
+  displayName: 'Artifactory Publish Build Info'
+  inputs:
+    artifactoryService: 'art-1'
+
